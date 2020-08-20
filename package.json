@@ -1,6 +1,6 @@
 {
   "name": "faceitapi",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Faceit API handler written in JS",
   "main": "index.js",
   "scripts": {
@@ -19,5 +19,11 @@
   "bugs": {
     "url": "https://github.com/TigranAvagyan18/FaceitApiHandler/issues"
   },
-  "homepage": "https://github.com/TigranAvagyan18/FaceitApiHandler#readme"
+  "homepage": "https://github.com/TigranAvagyan18/FaceitApiHandler#readme",
+  "dependencies": {
+    "axios": "^0.19.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
 }
