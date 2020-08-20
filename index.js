@@ -5,27 +5,51 @@ class Faceit {
     this.apiUrl = "https://open.faceit.com/data/v4/";
     this.apiKey = apiKey;
   }
-  getPlayerStats = async (nickname, options) => {
-    if (!options) this.url = `players?nickname=${nickname}`
-    return new Promise((resolve, reject) => {
+  getPlayerStats = async (nickname, options = { default: {} }) => {
+    if (options.default) this.url = `players?nickname=${nickname}`
+    if (options.type) {
+      this.id = await this.getId(nickname);
+      this.url = `players/${this.id}/${options.type.name}`;
+    }
+    return new Promise(async (resolve, reject) => {
       try {
-        const response = this.getRequest(this.url);
-        resolve(response);
+        const resp = await this.getRequest(this.url);
+        resolve(resp);
       } catch (error) {
-        reject(error)
+        console.log(error.config);
+        reject(error);
       }
     })
   }
-  getRequest = (url) => {
+  getPlayerStatsHistory = (id, gameName) => {
+    this.url = `players/${id}/history`;
+    this.game = { game: gameName }
+    return new Promise(async (resolve, reject) => {
+      try {
+        const resp = await this.getRequest(this.url, this.game);
+        resolve(resp);
+      } catch (error) {
+        console.log(error.config);
+        reject(error);
+      }
+    })
+  }
+  getId = async (nickname) => {
+    const resp = await this.getPlayerStats(nickname);
+    return resp.player_id;
+  }
+  getRequest = (url, data = null) => {
     return new Promise(async (resolve, reject) => {
       const apiUrl = this.apiUrl
       const apiKey = this.apiKey;
       try {
         const response = await Axios.get(apiUrl + url, {
-          headers: { 'Authorization': 'Bearer ' + apiKey }
+          headers: { 'Authorization': 'Bearer ' + apiKey },
+          params: data
         })
         resolve(response.data)
       } catch (error) {
+        console.log(error.response.status, error.response.statusText)
         reject(error)
       }
     })
