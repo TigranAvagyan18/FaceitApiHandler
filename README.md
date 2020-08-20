@@ -45,7 +45,7 @@ faceit.getPlayerStats('FACEIT-NICKNAME')
 
 ### Async/Await
 
-``` 
+```js
 async () => {
   const resp = await faceit.getPlayerStats('T777A');
   console.log(resp);
