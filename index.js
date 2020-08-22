@@ -10,6 +10,10 @@ class Faceit {
     if (options.type) {
       this.id = await this.getId(nickname);
       this.url = `players/${this.id}/${options.type.name}`;
+      if (options.type.gameName) {
+        this.url += `/${options.type.gameName}`;
+        console.log(this.url)
+      }
     }
     return new Promise(async (resolve, reject) => {
       try {
@@ -27,6 +31,42 @@ class Faceit {
     return new Promise(async (resolve, reject) => {
       try {
         const resp = await this.getRequest(this.url, this.game);
+        resolve(resp);
+      } catch (error) {
+        console.log(error.config);
+        reject(error);
+      }
+    })
+  }
+  getPlayerStatsHubs = (id) => {
+    this.url = `players/${id}/hubs`;
+    return new Promise(async (resolve, reject) => {
+      try {
+        const resp = await this.getRequest(this.url);
+        resolve(resp);
+      } catch (error) {
+        console.log(error.config);
+        reject(error);
+      }
+    })
+  }
+  getPlayerStatsByGame = (id, gameName) => {
+    this.url = `players/${id}/stats/${gameName}`;
+    return new Promise(async (resolve, reject) => {
+      try {
+        const resp = await this.getRequest(this.url);
+        resolve(resp);
+      } catch (error) {
+        console.log(error.config);
+        reject(error);
+      }
+    })
+  }
+  getPlayerStatsTournaments = (id) => {
+    this.url = `players/${id}/tournaments`;
+    return new Promise(async (resolve, reject) => {
+      try {
+        const resp = await this.getRequest(this.url);
         resolve(resp);
       } catch (error) {
         console.log(error.config);
